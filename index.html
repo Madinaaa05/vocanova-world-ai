@@ -1,0 +1,429 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VocaNova — Explore, Learn, Grow!</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --cream:#FFFDF5;
+  --yellow:#FFD76A;
+  --gold:#E5B83F;
+  --navy:#27354B;
+  --blue:#72D4F5;
+  --green:#7BD9B0;
+  --pink:#FFB9D5;
+  --purple:#BCA7FF;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#eaf8ff;color:var(--navy);font-family:Nunito,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}
+.sidebar{width:225px;flex-shrink:0;background:#263b62;color:white;padding:25px 16px;display:flex;flex-direction:column;gap:23px}
+.logo{font-size:25px;font-weight:900;color:#ffdc69}
+.logo small{display:block;font-size:10px;color:#c9e6ff;letter-spacing:2px}
+.nav{display:grid;gap:8px}
+.nav button{background:transparent;color:#e2eeff;text-align:left;padding:13px;border-radius:14px;font-weight:800}
+.nav button:hover,.nav button.active{background:#ffffff25;color:#ffdf80}
+.side-bottom{margin-top:auto;font-size:12px;color:#d2e5ff;line-height:1.8}
+main{flex:1;min-width:0}
+.topbar{height:75px;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;background:white}
+.topbar strong{font-size:20px}
+.user{display:flex;align-items:center;gap:10px;font-weight:900}
+.avatar{width:43px;height:43px;border-radius:50%;background:#ffe4b7;display:grid;place-items:center;font-size:28px;border:3px solid white;box-shadow:0 2px 9px #27354b20}
+.content{max-width:1500px;padding:25px;margin:auto}
+.page{display:none}.page.active{display:block}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(27px,3vw,43px);line-height:1.13}
+h2{font-size:23px}
+.muted{color:#71829a}
+.hero{position:relative;overflow:hidden;min-height:340px;border-radius:30px;padding:34px;color:white;background:linear-gradient(130deg,#55b8ee,#8bcefa 48%,#b3e7f5);box-shadow:0 12px 30px #4a9fce20}
+.hero:before{content:"";position:absolute;width:390px;height:390px;border-radius:50%;right:8%;top:70px;background:linear-gradient(#a6e5a2,#47bd91);box-shadow:0 18px 0 #319d84}
+.hero:after{content:"";position:absolute;right:3%;top:22px;width:90px;height:90px;background:#fff1a6;border-radius:50%;box-shadow:0 0 65px #fff1a6aa}
+.hero-copy{position:relative;z-index:2;max-width:52%}
+.hero h1{font-weight:900;text-shadow:0 3px 0 #3478a655}
+.hero p{line-height:1.8;color:#f4fbff;font-weight:700}
+.hero-art{position:absolute;right:5%;bottom:10px;width:43%;height:90%;z-index:1}
+.cloud{position:absolute;width:100px;height:32px;background:#ffffffa8;border-radius:40px;top:40px;right:16%}
+.cloud:before,.cloud:after{content:"";position:absolute;background:inherit;border-radius:50%;width:42px;height:42px;top:-18px;left:15px}
+.cloud:after{left:45px;top:-10px}
+.castle{position:absolute;bottom:80px;right:12%;font-size:95px;filter:drop-shadow(0 10px 2px #246e6044)}
+.explorer{position:absolute;bottom:22px;left:7%;font-size:105px;filter:drop-shadow(0 8px 3px #214e5840)}
+.pet{position:absolute;bottom:24px;right:6%;font-size:60px}
+.island{position:absolute;height:52px;bottom:12px;left:0;right:0;background:#70d4a4;border-radius:50%;box-shadow:inset 0 -12px #45b58d}
+.btn{padding:13px 21px;border-radius:15px;background:var(--yellow);color:#3b4560;font-weight:900;box-shadow:0 5px 0 #dfa935;transition:.2s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.03)}
+.btn.blue{background:#d7f3ff;box-shadow:0 5px 0 #95d5ed}
+.btn.dark{background:#344b76;color:white;box-shadow:0 5px 0 #1e2d4c}
+.btn.pink{background:#ffd6e6;box-shadow:0 5px 0 #eea6c4}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+.stat,.card{background:white;border:1px solid #e6f0f7;border-radius:21px;padding:20px;box-shadow:0 6px 20px #334f6a0b}
+.stat{display:flex;align-items:center;gap:13px}
+.stat-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:25px;background:#fff0bb}
+.stat:nth-child(2) .stat-icon{background:#d8f5e8}
+.stat:nth-child(3) .stat-icon{background:#e5ddff}
+.stat:nth-child(4) .stat-icon{background:#ffdfeb}
+.stat strong{display:block;font-size:23px}
+.stat small{color:#77879b;font-weight:800}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:25px 0 14px}
+.section-head h2{margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.feature{border-radius:23px;min-height:190px;padding:20px;position:relative;overflow:hidden;border:1px solid #fff}
+.feature h3{font-size:20px;margin:13px 0 5px}
+.feature p{font-size:13px;line-height:1.6;max-width:80%;color:#4e6179}
+.feature .big-emoji{font-size:45px}
+.feature:after{content:"";position:absolute;right:-15px;bottom:-22px;width:100px;height:100px;border-radius:50%;background:#ffffff50}
+.f-blue{background:linear-gradient(135deg,#c9f0ff,#e9f9ff)}
+.f-green{background:linear-gradient(135deg,#c9f5df,#effff6)}
+.f-pink{background:linear-gradient(135deg,#ffd9e8,#fff0f6)}
+.f-yellow{background:linear-gradient(135deg,#ffe6a0,#fff7df)}
+.f-purple{background:linear-gradient(135deg,#e3d8ff,#f6f1ff)}
+.f-orange{background:linear-gradient(135deg,#ffd7b4,#fff0e2)}
+.motivation{margin-top:20px;display:flex;align-items:center;gap:18px;background:linear-gradient(120deg,#fff0bd,#fff9e6);border:1px solid #f6df94;padding:20px;border-radius:22px}
+.motivation .pet-mot{font-size:55px}
+.motivation blockquote{margin:6px 0;font-size:18px;font-weight:900}
+.progress{height:10px;background:#eaf0f5;border-radius:30px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#70d8b2,#37b9a0);border-radius:30px}
+.map-banner{border-radius:25px;padding:24px;background:linear-gradient(#aee7fa,#d6f6ff);overflow:hidden}
+.map-banner h1{margin-bottom:8px}
+.world-map{min-height:440px;position:relative;overflow:hidden;border-radius:26px;background:linear-gradient(#93dcfa 0%,#d4f4ff 55%,#b0e9e0 100%);margin-top:20px}
+.world-map:before{content:"☁️     ☁️                  ☁️";position:absolute;inset:30px 5%;font-size:35px;letter-spacing:40px;opacity:.75}
+.land{position:absolute;border-radius:45% 50% 43% 52%;background:linear-gradient(145deg,#b6f0bd,#66d4a5);box-shadow:inset -12px -14px #44b88d55,0 12px 0 #56b99a;display:grid;place-items:center}
+.land:before{content:"";position:absolute;inset:14px;border:2px dashed #ffffff80;border-radius:inherit}
+.land .place{position:relative;z-index:2;background:white;color:#344a66;padding:10px 14px;border-radius:15px;font-weight:900;box-shadow:0 4px 0 #d1e9ed;white-space:nowrap}
+.land .land-icon{font-size:49px;position:absolute;top:-16px;left:10px}
+.land.one{width:260px;height:180px;left:7%;top:13%}
+.land.two{width:245px;height:180px;right:7%;top:11%;background:linear-gradient(140deg,#c8f1d5,#7bdcbd)}
+.land.three{width:250px;height:180px;left:35%;top:48%;background:linear-gradient(140deg,#a4e9e8,#5dc8be)}
+.land.four{width:205px;height:145px;left:7%;bottom:3%;background:linear-gradient(140deg,#d4f0a8,#9bd56c)}
+.land.five{width:200px;height:145px;right:5%;bottom:4%;background:linear-gradient(140deg,#e5d9ff,#b7a5ff)}
+.place.locked{opacity:.65}
+.scenario-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.scenario{overflow:hidden;border-radius:25px;background:white;border:1px solid #e6eff7;box-shadow:0 8px 24px #30435b0c}
+.scenario-art{height:180px;display:grid;place-items:center;font-size:75px;background:linear-gradient(140deg,#bcecff,#e8faff)}
+.scenario:nth-child(2) .scenario-art{background:linear-gradient(140deg,#ffe0b5,#fff2db)}
+.scenario-body{padding:20px}
+.scenario-body p{color:#75849a;line-height:1.7}
+.chatbox{max-width:950px;margin:auto;background:white;border-radius:26px;overflow:hidden;box-shadow:0 8px 30px #243e5915}
+.chat-scene{min-height:230px;background:linear-gradient(140deg,#a9e6f8,#d8f6ff);display:flex;align-items:center;justify-content:space-evenly;padding:20px}
+.chat-person{text-align:center;font-size:75px}
+.chat-person strong{display:block;font-size:13px;background:#fff;padding:8px 13px;border-radius:12px}
+.chat-body{padding:20px}
+.messages{display:grid;gap:12px;max-height:300px;overflow:auto;margin-bottom:16px}
+.msg{max-width:82%;padding:12px 15px;border-radius:17px;background:#edf8ff;line-height:1.6}
+.msg.me{margin-left:auto;background:#fff0c6}
+.msg small{display:block;color:#73839a;font-size:12px;margin-top:4px}
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px}
+.quick button{border:1px solid #d7e9f4;background:#f5fbff;border-radius:12px;padding:9px 12px;color:#304967;font-weight:800}
+.chat-input{display:flex;gap:10px}
+.chat-input input{min-width:0;flex:1;border:1px solid #dbe8f0;border-radius:14px;padding:13px;outline-color:#7bd3ed}
+.word-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.word{border:1px solid #e5eff5;border-radius:20px;padding:18px;background:white}
+.word .english{font-size:22px;font-weight:900}
+.word .translation{color:#63809b;font-weight:800;margin:6px 0}
+.word .example{font-size:13px;color:#718198;line-height:1.6}
+.word-actions{display:flex;gap:8px;margin-top:12px}
+.word-actions button{background:#eaf7ff;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:900}
+.profile-layout{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.profile-top{display:flex;align-items:center;gap:17px}
+.profile-big{font-size:60px;width:100px;height:100px;display:grid;place-items:center;background:#fff0c7;border-radius:28px}
+.friend{display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #edf1f5}
+.friend:last-child{border:0}
+.friend-icon{font-size:36px}
+.friend small{display:block;color:#78899d;margin-top:4px}
+.field{display:grid;gap:7px;margin:14px 0;font-weight:800}
+.field input,.field select{padding:12px;border:1px solid #d9e7ef;border-radius:12px;background:white}
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#27354b;color:white;padding:14px 20px;border-radius:15px;display:none;z-index:100;box-shadow:0 5px 20px #0002}
+@media(max-width:1000px){.sidebar{width:180px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:repeat(2,1fr)}.hero-copy{max-width:62%}.word-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.app{display:block}.sidebar{width:100%;padding:13px;gap:10px}.logo small,.side-bottom{display:none}.logo{font-size:21px}.nav{display:flex;overflow-x:auto}.nav button{white-space:nowrap;padding:10px}.topbar{height:60px;padding:10px 16px}.content{padding:15px}.hero{padding:23px;min-height:440px}.hero-copy{max-width:100%}.hero-art{width:100%;height:48%;right:0;bottom:0}.hero:before{right:8%;top:auto;bottom:15px;width:280px;height:180px}.hero:after{right:8%;top:20px;width:60px;height:60px}.castle{font-size:65px;bottom:53px}.explorer{font-size:78px;bottom:5px}.pet{font-size:44px;bottom:6px}.stats{gap:8px}.stat{padding:12px;gap:8px}.stat-icon{width:37px;height:37px;font-size:20px}.stat strong{font-size:19px}.grid,.scenario-grid,.word-grid,.profile-layout{grid-template-columns:1fr}.feature{min-height:155px}.land.one{left:-6%;width:210px}.land.two{right:-10%;width:190px}.land.three{left:25%;width:190px}.land.four{left:-8%;width:180px}.land.five{right:-8%;width:170px}.world-map{min-height:510px}.motivation{align-items:flex-start}.chat-input{flex-wrap:wrap}.chat-input input{flex-basis:65%}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">⭐ VocaNova <small>EXPLORE · LEARN · GROW</small></div>
+  <nav class="nav">
+    <button class="active" data-page="home">🏡 Home</button>
+    <button data-page="world">🗺️ World Map</button>
+    <button data-page="vocabulary">📚 Vocabulary</button>
+    <button data-page="practice">💬 AI Practice</button>
+    <button data-page="profile">👤 My Profile</button>
+    <button data-page="friends">👫 Friends</button>
+    <button data-page="settings">⚙️ Settings</button>
+  </nav>
+  <div class="side-bottom">✨ Every word opens a new world.<br>Created by Madina Sabirova</div>
+</aside>
+
+<main>
+<header class="topbar">
+  <strong id="pageTitle">Your learning adventure ✨</strong>
+  <div class="user"><span id="topName">Madina</span><div class="avatar" id="topAvatar">👩🏻‍🎓</div></div>
+</header>
+
+<div class="content">
+<section class="page active" id="home">
+  <div class="hero">
+    <div class="hero-copy">
+      <p>✨ YOUR ENGLISH ADVENTURE STARTS HERE</p>
+      <h1>Welcome to<br>VocaNova World!</h1>
+      <p>Learn new words, meet friendly characters, speak English in real-life situations and explore magical places!</p>
+      <button class="btn" onclick="go('world')">Start exploring →</button>
+    </div>
+    <div class="hero-art">
+      <div class="cloud"></div><div class="castle">🏰</div>
+      <div class="explorer" id="heroAvatar">👩🏻‍🎓</div><div class="pet">🐱</div>
+      <div class="island"></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-icon">📖</div><div><strong id="wordCount">0</strong><small>Words learned</small></div></div>
+    <div class="stat"><div class="stat-icon">🪙</div><div><strong id="coinCount">250</strong><small>Nova coins</small></div></div>
+    <div class="stat"><div class="stat-icon">🔥</div><div><strong>1 day</strong><small>Learning streak</small></div></div>
+    <div class="stat"><div class="stat-icon">🌟</div><div><strong id="levelText">A2</strong><small>Your level</small></div></div>
+  </div>
+
+  <div class="section-head"><h2>Choose your next adventure 🌈</h2><button class="btn blue" onclick="go('world')">View map →</button></div>
+  <div class="grid">
+    <div class="feature f-blue"><div class="big-emoji">🃏</div><h3>New Words</h3><p>Discover useful English words with translations and examples.</p><button class="btn blue" onclick="go('vocabulary')">Learn words</button></div>
+    <div class="feature f-green"><div class="big-emoji">🗣️</div><h3>AI Speaking Studio</h3><p>Practise conversations with friendly characters.</p><button class="btn" onclick="go('practice')">Let's talk!</button></div>
+    <div class="feature f-pink"><div class="big-emoji">🗺️</div><h3>Learning Map</h3><p>Visit new places and complete English missions.</p><button class="btn pink" onclick="go('world')">Explore world</button></div>
+    <div class="feature f-yellow"><div class="big-emoji">🏆</div><h3>Achievements</h3><p>Earn rewards every time you make progress.</p><button class="btn" onclick="showToast('🏆 Your adventure has just begun!')">My rewards</button></div>
+    <div class="feature f-purple"><div class="big-emoji">👫</div><h3>Study Together</h3><p>Meet friends and encourage each other.</p><button class="btn blue" onclick="go('friends')">Meet friends</button></div>
+    <div class="feature f-orange"><div class="big-emoji">🎯</div><h3>Daily Mission</h3><p>Learn five new words and finish one conversation.</p><button class="btn" onclick="go('vocabulary')">Start mission</button></div>
+  </div>
+  <div class="motivation"><div class="pet-mot">🐱✨</div><div><strong>Your daily motivation 💛</strong><blockquote>“You don't have to be perfect to start. Every new word brings you closer to your goal!”</blockquote><span class="muted">Small steps every day lead to big results.</span></div></div>
+</section>
+
+<section class="page" id="world">
+  <div class="map-banner"><h1>🌍 Your Learning World</h1><p>Every place is a new opportunity to practise English. Choose a destination!</p><strong>🪙 Collect coins · 🗣️ Speak English · 🌟 Unlock new places</strong></div>
+  <div class="world-map">
+    <div class="land one"><span class="land-icon">☕</span><button class="place" onclick="startScene('cafe')">☕ Coffee Street</button></div>
+    <div class="land two"><span class="land-icon">🛍️</span><button class="place" onclick="startScene('shop')">🛍️ Shopping City</button></div>
+    <div class="land three"><span class="land-icon">🎓</span><button class="place" onclick="startScene('campus')">🎓 University Island</button></div>
+    <div class="land four"><span class="land-icon">✈️</span><button class="place" onclick="startScene('travel')">✈️ Travel Town</button></div>
+    <div class="land five"><span class="land-icon">🔒</span><button class="place locked" onclick="showToast('🔒 Complete more missions to unlock this place!')">🏝️ Dream Island</button></div>
+  </div>
+  <div class="section-head"><h2>Choose a story 🎭</h2></div>
+  <div class="scenario-grid">
+    <div class="scenario"><div class="scenario-art">☕ 🧑🏻‍🍳 🥐</div><div class="scenario-body"><h3>1. A Morning at the Café</h3><p>Order your favourite drink, ask about the menu and speak to a friendly barista.</p><button class="btn" onclick="startScene('cafe')">Enter café →</button></div></div>
+    <div class="scenario"><div class="scenario-art">🛍️ 👗 🧑🏻</div><div class="scenario-body"><h3>2. Shopping Adventure</h3><p>Meet a shop assistant, ask about sizes, try clothes and buy something you like.</p><button class="btn pink" onclick="startScene('shop')">Enter shop →</button></div></div>
+  </div>
+</section>
+
+<section class="page" id="vocabulary">
+  <div class="map-banner"><h1>📚 Vocabulary Garden</h1><p>Collect words, discover their meanings and use them in real conversations.</p><div class="progress"><span id="wordProgress" style="width:0%"></span></div><strong id="progressLabel">0 of 12 words learned</strong></div>
+  <div class="section-head"><h2>Everyday English · A2</h2><button class="btn blue" onclick="shuffleWords()">🔀 Mix words</button></div>
+  <div class="word-grid" id="wordGrid"></div>
+</section>
+
+<section class="page" id="practice">
+  <div class="map-banner"><h1>🎬 AI Speaking Studio</h1><p>Step into a story, meet a character and practise English in a fun, cartoon-like world!</p></div>
+  <div class="section-head"><h2>Choose your adventure</h2></div>
+  <div class="scenario-grid" style="margin-bottom:20px">
+    <div class="scenario"><div class="scenario-art">☕ 🧑🏻‍🍳</div><div class="scenario-body"><h3>☕ Coffee Street</h3><p>Order a drink and chat with Alex, your friendly barista.</p><button class="btn" onclick="startScene('cafe')">Start story</button></div></div>
+    <div class="scenario"><div class="scenario-art">🛍️ 🧑🏻‍💼</div><div class="scenario-body"><h3>🛍️ Shopping City</h3><p>Shop for clothes and talk to Sam, your shop assistant.</p><button class="btn pink" onclick="startScene('shop')">Start story</button></div></div>
+  </div>
+  <div class="chatbox" id="chatbox" style="display:none">
+    <div class="chat-scene"><div class="chat-person"><div id="sceneIcon">☕</div><strong id="scenePlace">Coffee Street</strong></div><div class="chat-person"><div id="characterIcon">🧑🏻‍🍳</div><strong id="characterName">Alex · Barista</strong></div></div>
+    <div class="chat-body">
+      <div class="section-head"><h2 id="sceneTitle">A Morning at the Café</h2><button class="btn blue" onclick="go('practice')">Change story</button></div>
+      <div class="messages" id="messages"></div>
+      <div class="quick" id="quickReplies"></div>
+      <form class="chat-input" id="chatForm"><input id="chatInput" placeholder="Write your answer in English..." autocomplete="off"><button class="btn" type="submit">Send ➤</button></form>
+      <p class="muted" style="font-size:12px;margin-top:12px">💡 Stuck? Try a suggested phrase. Tap “Hint” to get help in Kazakh.</p>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="profile">
+  <div class="map-banner"><h1>👤 My Adventure Profile</h1><p>Your journey, your progress, your world!</p></div>
+  <div class="profile-layout" style="margin-top:20px">
+    <div class="card"><div class="profile-top"><div class="profile-big" id="profileAvatar">👩🏻‍🎓</div><div><h2 id="profileName">Madina</h2><p class="muted">🌱 English Explorer</p><strong>Level A2 · Word Collector</strong></div></div><div class="section-head"><h3>My progress</h3><strong id="profileWords">0 words</strong></div><div class="progress"><span id="profileProgress" style="width:0%"></span></div><p class="muted">Keep learning to unlock more places!</p><div class="stats" style="grid-template-columns:repeat(2,1fr)"><div class="stat"><div class="stat-icon">🪙</div><div><strong id="profileCoins">250</strong><small>Coins</small></div></div><div class="stat"><div class="stat-icon">🏅</div><div><strong id="achievements">1</strong><small>Achievements</small></div></div></div></div>
+    <div class="card"><h2>💛 A message for you</h2><div style="font-size:60px;text-align:center">🐱🌟</div><blockquote style="font-size:21px;font-weight:900">“Believe in yourself! Every word you learn is another step towards your dreams.”</blockquote><p class="muted">You are building your future, one word at a time.</p><button class="btn" onclick="showToast('🌟 You are doing great! Keep going!')">I can do it! ✨</button></div>
+    <div class="card"><h2>🗺️ My world map</h2><p>☕ Coffee Street <strong>· Available</strong></p><p>🛍️ Shopping City <strong>· Available</strong></p><p>🎓 University Island <strong>· Available</strong></p><p>🏝️ Dream Island <strong>· Coming soon</strong></p></div>
+    <div class="card"><h2>🏆 My achievements</h2><p>🌱 First Steps — started your journey</p><p id="wordBadge">📖 Word Collector — learn your first word</p><p>💬 Brave Speaker — practise a conversation</p><p>✨ Explorer — visit a new world</p></div>
+  </div>
+</section>
+
+<section class="page" id="friends">
+  <div class="map-banner"><h1>👫 Friends & Study Buddies</h1><p>Learning together makes every adventure more fun!</p></div>
+  <div class="card" style="margin-top:20px"><h2>🌟 Your community</h2><div class="friend"><div class="friend-icon">🧑🏻‍🎓</div><div style="flex:1"><strong>Alex Explorer</strong><small>Learning English · Level A2</small></div><span>🔥 5 days</span></div><div class="friend"><div class="friend-icon">👩🏽‍🎓</div><div style="flex:1"><strong>Sofia Star</strong><small>Vocabulary collector · Level B1</small></div><span>🌟 320 words</span></div><div class="friend"><div class="friend-icon">🧑🏼‍🚀</div><div style="flex:1"><strong>Leo Adventurer</strong><small>Exploring new worlds · Level A2</small></div><span>🪙 180 coins</span></div><p class="muted" style="font-size:13px">Demo profiles — online accounts and real friend connections can be added later.</p></div>
+</section>
+
+<section class="page" id="settings">
+  <div class="map-banner"><h1>⚙️ Your Settings</h1><p>Make VocaNova feel like your own little world.</p></div>
+  <div class="card" style="margin-top:20px;max-width:700px">
+    <label class="field">Your username<input id="nameInput" value="Madina" maxlength="24"></label>
+    <label class="field">Native language<select id="nativeLanguage"><option>Kazakh</option><option>Russian</option><option>Turkish</option><option>English</option></select></label>
+    <label class="field">Language to learn<select id="learnLanguage"><option>English</option><option>Turkish</option><option>Russian</option></select></label>
+    <label class="field">Your character<select id="avatarSelect"><option value="👩🏻‍🎓">🎓 Student</option><option value="🧑🏻‍🚀">🚀 Explorer</option><option value="🧝🏻‍♀️">🧚 Fantasy explorer</option><option value="👩🏽‍🎨">🎨 Artist</option><option value="🧑🏻‍💻">💻 Creator</option></select></label>
+    <label class="field">Daily reminder time<input id="reminderTime" type="time" value="18:00"></label>
+    <button class="btn" onclick="saveSettings()">Save changes ✨</button>
+    <p class="muted" style="margin-top:15px;font-size:12px">Settings are saved in this browser. Real notifications require additional setup.</p>
+  </div>
+</section>
+</div>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const words=[
+ {en:"Adventure",kk:"Шытырман оқиға",syn:"Journey",synkk:"Саяхат",ex:"Our adventure starts today!"},
+ {en:"Discover",kk:"Ашу, жаңалық табу",syn:"Find",synkk:"Табу",ex:"Let's discover a new place."},
+ {en:"Delicious",kk:"Дәмді",syn:"Tasty",synkk:"Дәмі жақсы",ex:"This cake is delicious."},
+ {en:"Friendly",kk:"Ақкөңіл, жылы жүзді",syn:"Kind",synkk:"Мейірімді",ex:"The shop assistant is friendly."},
+ {en:"Choose",kk:"Таңдау",syn:"Select",synkk:"Таңдап алу",ex:"Choose your favourite drink."},
+ {en:"Improve",kk:"Жақсарту",syn:"Develop",synkk:"Дамыту",ex:"I want to improve my English."},
+ {en:"Journey",kk:"Саяхат, жол",syn:"Trip",synkk:"Сапар",ex:"My learning journey is exciting."},
+ {en:"Remember",kk:"Есте сақтау",syn:"Recall",synkk:"Еске түсіру",ex:"I remember this new word."},
+ {en:"Expensive",kk:"Қымбат",syn:"Costly",synkk:"Бағасы жоғары",ex:"This jacket is expensive."},
+ {en:"Comfortable",kk:"Ыңғайлы",syn:"Cozy",synkk:"Жайлы",ex:"These shoes are comfortable."},
+ {en:"Recommend",kk:"Ұсыну",syn:"Suggest",synkk:"Кеңес беру",ex:"What drink do you recommend?"},
+ {en:"Confident",kk:"Өзіне сенімді",syn:"Sure",synkk:"Сенімді",ex:"I feel more confident speaking English."}
+];
+let learned=new Set(),coins=250,currentScene="cafe",sceneStep=0;
+const titles={home:"Your learning adventure ✨",world:"Explore your world 🗺️",vocabulary:"Vocabulary Garden 📚",practice:"AI Speaking Studio 🎬",profile:"My Adventure Profile 👤",friends:"Friends & Study Buddies 👫",settings:"Make it yours ⚙️"};
+function go(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ document.getElementById("pageTitle").textContent=titles[id]||"VocaNova";
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+function showToast(s){let t=document.getElementById("toast");t.textContent=s;t.style.display="block";clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.style.display="none",2600)}
+function updateStats(){
+ document.getElementById("wordCount").textContent=learned.size;
+ document.getElementById("coinCount").textContent=coins;
+ document.getElementById("profileCoins").textContent=coins;
+ document.getElementById("profileWords").textContent=learned.size+" words";
+ document.getElementById("progressLabel").textContent=learned.size+" of "+words.length+" words learned";
+ document.getElementById("wordProgress").style.width=(learned.size/words.length*100)+"%";
+ document.getElementById("profileProgress").style.width=(learned.size/words.length*100)+"%";
+ document.getElementById("achievements").textContent=1+learned.size;
+ document.getElementById("wordBadge").textContent=learned.size?"📖 Word Collector — "+learned.size+" words learned":"📖 Word Collector — learn your first word";
+}
+function renderWords(){
+ const grid=document.getElementById("wordGrid");grid.innerHTML="";
+ words.forEach((w,i)=>{
+ const done=learned.has(i),el=document.createElement("div");el.className="word";
+ el.innerHTML=`<div style="display:flex;justify-content:space-between"><span>📚 WORD ${String(i+1).padStart(2,"0")}</span><span>${done?"✅":"⭐"}</span></div><div class="english">${w.en}</div><div class="translation">${w.kk}</div><div class="example">“${w.ex}”</div><details style="margin-top:8px"><summary style="cursor:pointer;color:#477fa4;font-weight:800">Synonyms & translation</summary><p style="margin:8px 0 0">${w.syn} — ${w.synkk}</p></details><div class="word-actions"><button onclick="speakWord(${i})">🔊 Listen</button><button onclick="markWord(${i})">${done?"Learned ✓":"I know this!"}</button></div>`;
+ grid.appendChild(el);
+ });updateStats();
+}
+function markWord(i){if(!learned.has(i)){learned.add(i);coins+=10;showToast("🌟 Great! +10 Nova coins");}else showToast("💛 You already learned this word!");renderWords()}
+function speakWord(i){if("speechSynthesis" in window){let u=new SpeechSynthesisUtterance(words[i].en);u.lang="en-US";speechSynthesis.speak(u)}else showToast(words[i].en)}
+function shuffleWords(){words.sort(()=>Math.random()-.5);renderWords();showToast("🔀 Your words have been mixed!")}
+const scenes={
+ cafe:{place:"Coffee Street",title:"A Morning at the Café",icon:"☕",character:"🧑🏻‍🍳",name:"Alex · Barista",
+ intro:"Hi there! Welcome to Sunny Café ☀️ What would you like to drink today?",
+ replies:["I'd like a cup of tea, please.","Can I have a coffee?","What do you recommend?"],
+ steps:[
+  {keys:["tea","coffee","like","please","recommend"],reply:"Great choice! 😊 Would you like anything to eat with your drink?",options:["Yes, I'd like a croissant.","No, thank you.","How much is it?"]},
+  {keys:["croissant","eat","no","thank","much","price","cost"],reply:"Of course! Your total is five dollars. Would you like to pay by cash or card?",options:["By card, please.","By cash, please.","Can I have the menu?"]},
+  {keys:["card","cash","menu","please","pay","thanks"],reply:"Thank you so much! Here is your order. Have a wonderful day! 🌟",options:["Thank you! Have a nice day!","That's great, thanks!"]},
+  {keys:["thank","great","nice","wonderful","day"],reply:"You're welcome! You did a wonderful job speaking English. 🎉",options:["Start again","Thank you!"]}
+ ]},
+ shop:{place:"Shopping City",title:"A Shopping Adventure",icon:"🛍️",character:"🧑🏻‍💼",name:"Sam · Shop Assistant",
+ intro:"Hello! Welcome to Fashion Corner! 👋 Can I help you find anything today?",
+ replies:["I'm looking for a jacket.","I'd like to buy a T-shirt.","I'm just looking, thanks."],
+ steps:[
+  {keys:["jacket","shirt","looking","buy","help","thanks"],reply:"Sure! What size do you need? We have small, medium and large.",options:["Medium, please.","Can I try it on?","How much is it?"]},
+  {keys:["medium","size","try","much","price","large","small","please"],reply:"Here you are! The fitting room is just over there. What do you think?",options:["It fits perfectly!","It's too big.","It's too small."]},
+  {keys:["fits","perfect","big","small","like","colour","color"],reply:"Wonderful! This item costs twenty dollars. Would you like to buy it?",options:["Yes, I'll take it.","Is there a discount?","No, thank you."]},
+  {keys:["yes","take","discount","no","thank","buy"],reply:"Thank you for visiting! Enjoy your new clothes. Have a lovely day! 🌈",options:["Thank you! Bye!","See you next time!"]}
+ ]},
+ campus:{place:"University Island",title:"A Day at University",icon:"🎓",character:"👩🏻‍🏫",name:"Taylor · Student",
+ intro:"Hi! Are you new here? Welcome to our university! What are you studying?",
+ replies:["I'm studying English.","I'm a university student.","Can you show me the library?"],
+ steps:[{keys:["english","student","library","studying"],reply:"That's wonderful! Do you enjoy learning languages?",options:["Yes, I love English.","It's sometimes difficult.","I want to speak better."]},{keys:["yes","love","difficult","better","speak"],reply:"Keep practising! The library is next to the main building. Have a great day!",options:["Thank you for your help!","See you later!"]}]
+ },
+ travel:{place:"Travel Town",title:"At the Airport",icon:"✈️",character:"🧑🏻‍✈️",name:"Jamie · Airport staff",
+ intro:"Good morning! Welcome to the airport. Where would you like to travel today?",
+ replies:["I'd like to go to London.","Where is gate number five?","I need some help, please."],
+ steps:[{keys:["london","gate","help","travel","please"],reply:"Of course! Do you have your passport and boarding pass?",options:["Yes, here they are.","Where is the gate?","Thank you!"]},{keys:["yes","gate","thank","passport","boarding"],reply:"Your gate is on the left. Have a safe and wonderful trip! 🌍",options:["Thank you very much!","Have a nice day!"]}]
+ }
+};
+function startScene(id){
+ currentScene=scenes[id]?id:"cafe";sceneStep=0;
+ const s=scenes[currentScene];go("practice");
+ document.getElementById("chatbox").style.display="block";
+ document.getElementById("sceneIcon").textContent=s.icon;
+ document.getElementById("scenePlace").textContent=s.place;
+ document.getElementById("characterIcon").textContent=s.character;
+ document.getElementById("characterName").textContent=s.name;
+ document.getElementById("sceneTitle").textContent=s.title;
+ document.getElementById("messages").innerHTML="";
+ addMessage(s.name,s.intro,false);
+ renderQuick(s.replies);
+ document.getElementById("chatbox").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function addMessage(name,txt,me,translation=""){
+ const d=document.createElement("div");d.className="msg"+(me?" me":"");
+ d.innerHTML=`<strong>${name}</strong><div></div><small></small>`;
+ d.children[1].textContent=txt;d.children[2].textContent=translation;
+ document.getElementById("messages").appendChild(d);
+ document.getElementById("messages").scrollTop=999999;
+}
+function renderQuick(items){
+ const q=document.getElementById("quickReplies");q.innerHTML="";
+ items.forEach(t=>{let b=document.createElement("button");b.textContent=t;b.onclick=()=>sendMessage(t);q.appendChild(b)});
+ let hint=document.createElement("button");hint.textContent="💡 Hint / Кеңес";hint.onclick=()=>{addMessage("VocaNova Hint","Қысқа сөйлеммен жауап беруге болады. Мысалы: “I'd like ... please.” — “Маған ... беріңізші.”",false);};q.appendChild(hint);
+}
+function sendMessage(text){
+ if(!text.trim())return;
+ addMessage("You",text,true);
+ const s=scenes[currentScene],step=s.steps[Math.min(sceneStep,s.steps.length-1)];
+ const lower=text.toLowerCase();
+ const understood=step.keys.some(k=>lower.includes(k));
+ let reply=step.reply;
+ if(!understood){
+   reply=currentScene==="cafe"?"That's interesting! 😊 Could you tell me what you'd like to order?":currentScene==="shop"?"No problem! 😊 What would you like to know about this item?":"I understand! 😊 Could you tell me a little more?";
+   if(sceneStep>0)reply=step.reply;
+ }else{
+   sceneStep++;
+   coins+=5;
+ }
+ setTimeout(()=>{
+  addMessage(s.name,reply,false);
+  if(sceneStep>=s.steps.length){
+   addMessage("VocaNova 🎉","Story complete! You practised English in a real-life situation. +5 coins for taking part!",false);
+   coins+=5;
+   renderQuick(["Play again","Go to world map"]);
+   updateStats();
+  }else renderQuick(step.options);
+  updateStats();
+ },350);
+}
+document.getElementById("chatForm").addEventListener("submit",e=>{
+ e.preventDefault();let input=document.getElementById("chatInput");let val=input.value.trim();
+ if(!val)return;
+ if(["play again","start again"].includes(val.toLowerCase())){startScene(currentScene);input.value="";return}
+ if(val.toLowerCase().includes("world map")){go("world");input.value="";return}
+ sendMessage(val);input.value="";
+});
+function saveSettings(){
+ let name=document.getElementById("nameInput").value.trim()||"Explorer";
+ let avatar=document.getElementById("avatarSelect").value;
+ document.getElementById("topName").textContent=name;
+ document.getElementById("profileName").textContent=name;
+ document.getElementById("topAvatar").textContent=avatar;
+ document.getElementById("profileAvatar").textContent=avatar;
+ document.getElementById("heroAvatar").textContent=avatar;
+ try{localStorage.setItem("vocanovaName",name);localStorage.setItem("vocanovaAvatar",avatar)}catch(e){}
+ showToast("✨ Your profile has been updated!");go("profile");
+}
+try{
+ const n=localStorage.getItem("vocanovaName"),a=localStorage.getItem("vocanovaAvatar");
+ if(n){document.getElementById("nameInput").value=n;document.getElementById("topName").textContent=n;document.getElementById("profileName").textContent=n}
+ if(a){document.getElementById("avatarSelect").value=a;document.getElementById("topAvatar").textContent=a;document.getElementById("profileAvatar").textContent=a;document.getElementById("heroAvatar").textContent=a}
+}catch(e){}
+renderWords();updateStats();
+</script>
+</body>
+</html>
